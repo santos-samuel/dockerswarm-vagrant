@@ -1,0 +1,22 @@
+---
+
+# common
+- hosts: workers
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  gather_facts: no
+
+  tasks:
+  - name: Copy file with owner and permissions
+    copy:
+      src: ./moo.tar.gz
+      dest: /home/vagrant/
+      mode: '0644'
+
+  - name: Load image from archive and push to a private registry
+    docker_image:
+      name: moo
+      push: yes
+      load_path: /home/vagrant/moo.tar.gz
+      source: load

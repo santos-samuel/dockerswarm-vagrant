@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+  #Nginx Service
+  webserver:
+      image: nginx:alpine
+      deploy:
+        replicas: 3
+      restart: unless-stopped
+      tty: true
+      ports:
+        - "80:80"
