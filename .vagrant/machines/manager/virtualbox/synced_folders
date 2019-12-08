@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/files":{"guestpath":"/home/vagrant/files","hostpath":"/home/samuel/Desktop/MyProjects/Project/dockerswarm-vagrant/files","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/samuel/Desktop/MyProjects/Project/dockerswarm-vagrant","disabled":false,"__vagrantfile":true}}}
