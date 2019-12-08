@@ -59,7 +59,7 @@
   become: yes
   become_method: sudo
   gather_facts: no
-  
+
   tasks:
   - name: Rolling update
     docker_swarm_service:
@@ -70,5 +70,5 @@
         delay: 10s
         order: stop-first
       publish:
-        published_port: 80
-        target_port: 80
+        - published_port: 80
+          target_port: 80
