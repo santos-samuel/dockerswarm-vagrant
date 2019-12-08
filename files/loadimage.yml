@@ -1,22 +1,17 @@
 ---
 
-# common
-- hosts: workers
+- hosts: manager
   remote_user: vagrant
   become: yes
   become_method: sudo
   gather_facts: no
 
   tasks:
-  - name: Copy file with owner and permissions
-    copy:
-      src: ./moo.tar.gz
-      dest: /home/vagrant/
-      mode: '0644'
-
-  - name: Load image from archive and push to a private registry
+  - name: Tag and push to local registry
     docker_image:
-      name: moo
+      # Image will be nginx_moo
+      name: nginx_moo
+      # Will be pushed to localhost:5000/nginx_moo
+      repository: localhost:5000/nginx_moo
       push: yes
-      load_path: /home/vagrant/moo.tar.gz
-      source: load
+      source: local
