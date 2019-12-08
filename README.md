@@ -5,6 +5,11 @@ docker node ls
 
 CONFIGURE ANSIBLE
 LAB4
+ssh-keyscan manager worker1 worker2 >> .ssh/known_hosts
+ssh-keygen -t rsa -b 2048
+ansible-playbook ssh-addkey.yml --ask-pass
+vagrant vagrant
+ansible all -m ping
 
 But no service running
 docker service ls
