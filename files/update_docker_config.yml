@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  gather_facts: no
+
+  tasks:
+  - name: Update docker config
+    copy:
+      src: ./config_files/daemon.json
+      dest: /etc/docker/daemon.json
+      mode: '0644'
+    notify: restart docker
+
+  handlers:
+  - name: restart docker
+    service:
+      name: docker
+      state: restarted

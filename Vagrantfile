@@ -12,19 +12,12 @@ vmmemory = 512
 # Increase numcpu if you want more cpu's per vm
 numcpu = 1
 
-instances = []
+manager_ip = "192.168.56.2"
 
+instances = []
 (1..numworkers).each do |n|
   instances.push({:name => "worker#{n}", :ip => "192.168.56.#{n+2}"})
 end
-
-manager_ip = "192.168.56.2"
-
-# File.open("./hosts", 'w') { |file|
-#   instances.each do |i|
-#     file.write("#{i[:ip]} #{i[:name]} #{i[:name]}\n")
-#   end
-# }
 
 http_proxy = ""
 # Proxy configuration
@@ -77,11 +70,7 @@ Vagrant.configure("2") do |config|
       # Configuration for Unix/Linux hosts
         i.vm.synced_folder "files", "/home/vagrant/files"
       end
-      i.vm.provision "shell", path: "./provision.sh"
-      # if File.file?("./hosts")
-      #   i.vm.provision "file", source: "hosts", destination: "/tmp/hosts"
-      #   i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true
-      # end
+      i.vm.provision "shell", path: "./provision_manager.sh"
       if auto
         i.vm.provision "shell", inline: "docker swarm init --advertise-addr #{manager_ip}"
         i.vm.provision "shell", inline: "docker swarm join-token -q worker > /vagrant/token"
@@ -99,11 +88,7 @@ Vagrant.configure("2") do |config|
         i.proxy.https    = https_proxy
         i.proxy.no_proxy = no_proxy
       end
-      i.vm.provision "shell", path: "./provision.sh"
-      # if File.file?("./hosts")
-      #   i.vm.provision "file", source: "hosts", destination: "/tmp/hosts"
-      #   i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true
-      # end
+      i.vm.provision "shell", path: "./provision_worker.sh"
       if auto
         i.vm.provision "shell", inline: "docker swarm join --advertise-addr #{instance[:ip]} --listen-addr #{instance[:ip]}:2377 --token `cat /vagrant/token` #{manager_ip}:2377"
       end
